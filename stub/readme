@@ -1,0 +1,11 @@
+make sure you put a u-boot.bin here. it doesnt technically have to be u-boot.
+
+build steps taken from my Yocto setup for this.
+
+${AS} -o ${B}/boot.o ${S}/boot.S
+
+${CC} -ffreestanding -nostdlib -nostartfiles -fno-builtin -fno-stack-protector -fno-pie -mgeneral-regs-only -O2 -c -o ${B}/fdt_parse.o ${S}/fdt_parse.c
+
+${LD} -T ${S}/stub.ld -o ${B}/stub.elf ${B}/boot.o ${B}/fdt_parse.o
+
+${OBJCOPY} -O binary ${B}/stub.elf ${B}/kernel8.img
